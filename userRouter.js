@@ -31,4 +31,15 @@ userRouter.post("/", async (req, res) => {
     res.status(code).json({ success: false, message: message });
   }
 });
+
+userRouter.put("/:id", async (req, res) => {
+  const { id } = req.params;
+  const changes = req.body;
+  try {
+    const updated = await userDb.update(id, changes);
+    res.status(200).json({ success: true, updated });
+  } catch ({ code, message }) {
+    res.status(code).json({ success: false, message: message });
+  }
+});
 module.exports = userRouter;

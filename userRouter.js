@@ -1,5 +1,6 @@
 const express = require("express");
 const userDb = require("./data/helpers/userDb");
+const postDb = require("./data/helpers/postDb");
 
 const userRouter = express.Router();
 
@@ -17,6 +18,15 @@ userRouter.get("/:id", async (req, res) => {
   try {
     const user = await userDb.getById(id);
     res.status(200).json({ success: true, user });
+  } catch ({ code, message }) {
+    res.status(code).json({ success: false, message: message });
+  }
+});
+userRouter.get("/:userId/posts", async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const userPosts = await userDb.getUserPosts(userId);
+    res.status(200).json({ success: true, userPosts });
   } catch ({ code, message }) {
     res.status(code).json({ success: false, message: message });
   }
@@ -47,7 +57,7 @@ userRouter.delete("/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
-    const deleted = await userDb.remove(Number(id));
+    const deleted = await userDb.remove(id);
     res.status(200).json({ success: true });
   } catch (error) {
     res.status(404).json({ success: false, message: error.message });

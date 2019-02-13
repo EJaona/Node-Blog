@@ -23,9 +23,9 @@ postRouter.get("/:id", async (req, res) => {
 });
 
 // postRouter.get("/:id/posts", async (req, res) => {
-//   const { id } = req.params;
+//   const { userId } = req.params;
 //   try {
-//     const post = await postDb.getUserPosts(id);
+//     const post = await postDb.getUserPosts(userId);
 //     res.status(200).json({ success: true, post });
 //   } catch ({ code, message }) {
 //     res.status(code).json({ success: false, message: message });
@@ -37,6 +37,17 @@ postRouter.post("/", async (req, res) => {
   try {
     const post = await postDb.insert(newPost);
     res.status(201).json({ success: true, post });
+  } catch ({ code, message }) {
+    res.status(code).json({ success: false, message: message });
+  }
+});
+
+postRouter.put("/:id", async (req, res) => {
+  const { id } = req.params;
+  const changes = req.body;
+  try {
+    const changed = await postDb.update(id, changes);
+    res.status(200).json({ success: true, changed });
   } catch ({ code, message }) {
     res.status(code).json({ success: false, message: message });
   }

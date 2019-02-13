@@ -42,4 +42,15 @@ userRouter.put("/:id", async (req, res) => {
     res.status(code).json({ success: false, message: message });
   }
 });
+
+userRouter.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deleted = await userDb.remove(Number(id));
+    res.status(200).json({ success: true });
+  } catch (error) {
+    res.status(404).json({ success: false, message: error.message });
+  }
+});
 module.exports = userRouter;

@@ -52,4 +52,14 @@ postRouter.put("/:id", async (req, res) => {
     res.status(code).json({ success: false, message: message });
   }
 });
+postRouter.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deleted = await postDb.remove(id);
+    res.status(200).json({ success: true });
+  } catch ({ code, message }) {
+    res.status(code).json({ success: false, message: message });
+  }
+});
 module.exports = postRouter;

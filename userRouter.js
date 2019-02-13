@@ -12,4 +12,23 @@ userRouter.get("/", async (req, res) => {
   }
 });
 
+userRouter.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await userDb.getById(id);
+    res.status(200).json({ success: true, user });
+  } catch ({ code, message }) {
+    res.status(code).json({ success: false, message: message });
+  }
+});
+
+userRouter.post("/", async (req, res) => {
+  const user = req.body;
+  try {
+    const newUser = await userDb.insert(user);
+    res.status(201).json({ success: true, newUser });
+  } catch ({ code, message }) {
+    res.status(code).json({ success: false, message: message });
+  }
+});
 module.exports = userRouter;

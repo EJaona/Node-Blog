@@ -1,6 +1,5 @@
 const express = require("express");
 const userDb = require("./data/helpers/userDb");
-const postDb = require("./data/helpers/postDb");
 
 const userRouter = express.Router();
 
@@ -34,6 +33,7 @@ userRouter.get("/:userId/posts", async (req, res) => {
 
 userRouter.post("/", async (req, res) => {
   const user = req.body;
+
   try {
     const newUser = await userDb.insert(user);
     res.status(201).json({ success: true, newUser });
